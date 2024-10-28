@@ -1,0 +1,69 @@
+openapi: 3.0.0
+info:
+  title: WhatsApp HTTP API
+  version: 1.0.0
+  description: A memory-optimized WhatsApp HTTP API
+
+servers:
+  - url: http://localhost:3000
+    description: Local development server
+
+security:
+  - ApiKeyAuth: []
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: apikey
+
+paths:
+  /session/start:
+    post:
+      summary: Start a new WhatsApp session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sessionId:
+                  type: string
+      responses:
+        '200':
+          description: Session started
+          
+  /message/send:
+    post:
+      summary: Send a message
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sessionId:
+                  type: string
+                to:
+                  type: string
+                message:
+                  type: string
+      responses:
+        '200':
+          description: Message queued
+          
+  /session/status:
+    get:
+      summary: Get session status
+      parameters:
+        - in: query
+          name: sessionId
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Session status
